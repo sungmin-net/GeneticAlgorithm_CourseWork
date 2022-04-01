@@ -1,5 +1,3 @@
-//
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,19 +15,19 @@ public class GA1Main {
     private static final String OUTPUT_FILE = "rr.out";
     private static final int TIMEOUT = 30000; // 30 sec.
 
-    // hyper parameters
-    private static final double SELECTION_EXCEPTION = 0.1; // anyone can be a parent with 10%
-    private static final double SELECTION_PRESSURE = 0.1; // if not, upper 10% can be a parent
-    private static final int POPULATION_PARAMETER = 100; // this x mChromosomeLength = pop.size
+    // parameters
+    private static final double SELECTION_EXCEPTION = 0.1; // anyone can be a parent with this
+    private static final double SELECTION_PRESSURE = 0.045; // if not, upper this can be a parent
+    private static final int POPULATION_PARAMETER = 50; // this x mChromosomeLength = pop.size
 
     private static Random mRandom = new Random();
     private static int mN;
     private static String mY;
     private static int mChromosomeLength = 0; // will be mN * 8
-    private static int mPopulationSize = 0; // will be chromosome length * 100
+    private static int mPopulationSize = 0; // mChromosomeLength * POP_PARAM
     private static int mMaxQuality = 0; // will be 13 * (mN / 2) if mN is even, else,
 
-    private static StringBuffer mBuf = new StringBuffer(); // TODO use this.
+    private static StringBuffer mBuf = new StringBuffer();
 
     public static void main(String[] args) throws Exception {
 
@@ -172,7 +170,7 @@ public class GA1Main {
             mBuf.setLength(0);
             mBuf.append("# Generation ").append(generation).append(" ended : ").append(
                     curGenerationEndTime).append(" (takes ").append(curLaptime).append("ms)");
-            mBuf.append("\n").append("# Current quality average: ").append(
+            mBuf.append("\n").append("# Current average: ").append(
                     generationTotalQuality / mPopulationSize);
             mBuf.append("\n").append("# Current best : ").append(bestSolution.toString());
             System.out.println(mBuf.toString());
@@ -267,3 +265,4 @@ public class GA1Main {
         }
     }
 }
+
