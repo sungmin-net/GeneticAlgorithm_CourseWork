@@ -16,10 +16,11 @@ public class GA2Main {
     private static final int TIMEOUT = 180000; // 180 sec.
 
     // Parameters
+    private static final int POPULATION_PARAMETER = 500; // this x mChromosomeLength = pop. size
     private static final double SELECTION_EXCEPTION = 0.1; // anyone can be a parent with 10%
     private static final double SELECTION_PRESSURE = 0.1; // if not, upper 10% can be a parent
-    private static final int POPULATION_PARAMETER = 500; // this x mChromosomeLength = pop. size
     private static final int NUM_CUTTING_POINT = 4;
+    private static final double MUTATION_PROBABILITY = 0.05;
 
     private static Random mRandom = new Random();
     private static StringBuffer mBuf = new StringBuffer();
@@ -126,6 +127,14 @@ public class GA2Main {
                 // 2-2. crossover
                 boolean[] childChromosome = getChildChromosome(population.get(p1Index).mChromosome,
                         population.get(p2Index).mChromosome);
+
+                // 2-3. mutation
+                for (int i = 0 ; i < childChromosome.length ; i++) {
+                    if (mRandom.nextDouble() < MUTATION_PROBABILITY) {
+                        childChromosome[ i ] = !childChromosome[ i ];
+                    }
+                }
+
                 Solution childSolution = new Solution(childChromosome, generation, id,
                         population.get(p1Index), population.get(p2Index));
 
@@ -239,29 +248,38 @@ public class GA2Main {
         }
         buf.setLength(buf.length() - 2);
         System.out.println(buf.toString());
+
+
+        Integer[] indices = new Integer[ NUM_CUTTING_POINT ];
+        indices[ 0 ] = 3;
+        indices[ 1 ] = 5;
+        indices[ 2 ] = 8;
         */
 
         System.arraycopy(p1Chromosome, 1, child, 1, indices[ 0 ]);
+
         boolean isP1Turn = false;
         for (int i = 1 ; i < NUM_CUTTING_POINT ; i++) {
             if (isP1Turn) {
-                System.arraycopy(p1Chromosome, indices[ i - 1 ], child, indices[ i - 1 ],
+                System.arraycopy(p1Chromosome, indices[ i - 1 ] + 1, child, indices[ i - 1 ] + 1,
                         indices[ i ] - indices[ i - 1 ]);
             } else {
-                System.arraycopy(p2Chromosome, indices[ i - 1 ], child, indices[ i - 1 ],
+                System.arraycopy(p2Chromosome, indices[ i - 1 ] + 1, child, indices[ i - 1 ] + 1,
                         indices[ i ] - indices[ i - 1 ]);
             }
             isP1Turn = !isP1Turn;
         }
+
         if (isP1Turn) {
-            System.arraycopy(p1Chromosome, indices[ NUM_CUTTING_POINT  - 1 ], child,
-                    indices[ NUM_CUTTING_POINT  - 1 ],
+            System.arraycopy(p1Chromosome, indices[ NUM_CUTTING_POINT  - 1 ] + 1, child,
+                    indices[ NUM_CUTTING_POINT  - 1 ] + 1,
                     mNumVertex - indices[ NUM_CUTTING_POINT  - 1 ]);
         } else {
-            System.arraycopy(p2Chromosome, indices[ NUM_CUTTING_POINT  - 1 ], child,
-                    indices[ NUM_CUTTING_POINT  - 1 ],
+            System.arraycopy(p2Chromosome, indices[ NUM_CUTTING_POINT  - 1 ] + 1, child,
+                    indices[ NUM_CUTTING_POINT  - 1 ] + 1,
                     mNumVertex - indices[ NUM_CUTTING_POINT  - 1 ]);
         }
+
         return child;
     }
 
