@@ -16,10 +16,10 @@ public class GA2Main {
     private static final int TIMEOUT = 60000; // should be 180000 (180 sec).
 
     // Parameters
-    private static final int POPULATION_PARAMETER = 5000000; // this / mChromosomeLength = pop. size
-    private static final double SELECTION_EXCEPTION = 0.10; // anyone can be a parent with 10%
-    private static final double SELECTION_PRESSURE = 0.10; // if not, upper 10% can be a parent
-    private static final int NUM_CUTTING_POINT = 4;
+    private static final int POPULATION_PARAMETER = 500000; // this / mChromosomeLength = pop. size
+    private static final double SELECTION_EXCEPTION = 0.05; // anyone can be a parent with 10%
+    private static final double SELECTION_PRESSURE = 0.05; // if not, upper 10% can be a parent
+    private static final int NUM_CUTTING_POINT = 2;
     private static final double MUTATION_PROBABILITY = 0.05; // each gene can be flipped with 5%
 
     private static Random mRandom = new Random();
@@ -158,7 +158,9 @@ public class GA2Main {
                     curGenEndTime).append(" (takes ").append(curGenTime).append("ms)");
             mBuf.append("\n").append("# Current average: ").append(
                     (double) genTotalQuality / numPopulation);
-            mBuf.append("\n").append("# Current best : ").append(bestSolution.mQuality);
+            mBuf.append("\n").append("# Current best : ").append(bestSolution.mQuality)
+                    .append("/").append(getMaxQuality()).append(" (")
+                    .append(getChromosomeStr(bestSolution.mChromosome)).append(")");
             System.out.println(mBuf.toString());
             maxGenTime = Math.max(maxGenTime, curGenTime);
 
@@ -225,13 +227,13 @@ public class GA2Main {
     }
 
     private static String getChromosomeStr(boolean[] chromosome) {
-        mBuf.setLength(0);
+        StringBuffer buf = new StringBuffer();
         for (int i = 1 ; i <= mNumVertex ; i++) {
             if (chromosome[ i ]) {
-                mBuf.append(i).append(" ");
+                buf.append(i).append(" ");
             }
         }
-        return mBuf.substring(0, mBuf.length() - 1).toString();
+        return buf.substring(0, buf.length() - 1).toString();
     }
 
     private static boolean[] getChildChromosome(boolean[] p1Chromosome, boolean[] p2Chromosome) {
