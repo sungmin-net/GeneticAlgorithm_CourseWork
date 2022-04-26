@@ -13,14 +13,14 @@ public class GA2Main {
     private static final long START_TIME = System.currentTimeMillis();
     private static final String INPUT_FILE = "rr.in";
     private static final String OUTPUT_FILE = "rr.out";
-    private static final int TIMEOUT = 180000; // 180 sec.
+    private static final int TIMEOUT = 60000; // should be 180000 (180 sec).
 
     // Parameters
-    private static final int POPULATION_PARAMETER = 500; // this x mChromosomeLength = pop. size
-    private static final double SELECTION_EXCEPTION = 0.1; // anyone can be a parent with 10%
-    private static final double SELECTION_PRESSURE = 0.1; // if not, upper 10% can be a parent
-    private static final int NUM_CUTTING_POINT = 4;
-    private static final double MUTATION_PROBABILITY = 0.05;
+    private static final int POPULATION_PARAMETER = 50; // this x mChromosomeLength = pop. size
+    private static final double SELECTION_EXCEPTION = 0.10; // anyone can be a parent with 10%
+    private static final double SELECTION_PRESSURE = 0.10; // if not, upper 10% can be a parent
+    private static final int NUM_CUTTING_POINT = 3;
+    private static final double MUTATION_PROBABILITY = 0.05; // each gene can be flipped with 5%
 
     private static Random mRandom = new Random();
     private static StringBuffer mBuf = new StringBuffer();
@@ -88,7 +88,7 @@ public class GA2Main {
         mBuf.append(" (takes ").append(populationEndTime - populationStartTime).append("ms)");
         mBuf.append("\n").append("# Current average: ").append(
                 (double) genTotalQuality / numPopulation);
-        mBuf.append("\n").append("# Current best : ").append(bestSolution.toString());
+        mBuf.append("\n").append("# Current best : ").append(bestSolution.mQuality);
         System.out.println(mBuf.toString());
 
         // 2. evolution
@@ -170,8 +170,9 @@ public class GA2Main {
 
         mBuf.setLength(0);
         mBuf.append("# Done. (takes ").append(System.currentTimeMillis() - START_TIME)
-        .append(" ms, maxLapTime ").append(maxGenTime).append(" ms.").append("\n")
+        .append(" ms, maxLapTime ").append(maxGenTime).append(" ms. best ")
         .append(bestSolution.mQuality).append("/").append(getMaxQuality()).append(")");
+        System.out.println(mBuf.toString());
 
     } // end of Main()
 
@@ -207,9 +208,11 @@ public class GA2Main {
         for (int i = 1 ; i <= mNumVertex ; i++) {
             if (chromosome[ i ]) {
                 for (int j = 1 ; j <= mNumVertex ; j++) {
-                    if (i == j) {
+                    /*
+                    if (i == j && chromosome[ i ][ j ] == 0) {
                         continue;
                     }
+                    */
                     if (!chromosome[ j ]) {
                         sum += mGraph[ i ][ j ];
                     }
@@ -239,22 +242,6 @@ public class GA2Main {
         } while (set.size() != NUM_CUTTING_POINT);
 
         Integer[] indices = set.toArray(new Integer[ 0 ]);
-
-        /*
-        StringBuffer buf = new StringBuffer();
-        buf.append("Cutting points: ");
-        for (int c : indices) {
-            buf.append(c).append(", ");
-        }
-        buf.setLength(buf.length() - 2);
-        System.out.println(buf.toString());
-
-
-        Integer[] indices = new Integer[ NUM_CUTTING_POINT ];
-        indices[ 0 ] = 3;
-        indices[ 1 ] = 5;
-        indices[ 2 ] = 8;
-        */
 
         System.arraycopy(p1Chromosome, 1, child, 1, indices[ 0 ]);
 
