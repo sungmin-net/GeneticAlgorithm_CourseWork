@@ -11,8 +11,8 @@ import java.util.TreeSet;
 public class GA2Main {
 
     private static final long START_TIME = System.currentTimeMillis();
-    private static final String INPUT_FILE = "rr.in";
-    private static final String OUTPUT_FILE = "rr.out";
+    private static final String INPUT_FILE = "maxcut.in";
+    private static final String OUTPUT_FILE = "maxcut.out";
     private static final int TIMEOUT = 60000; // should be 180000 (180 sec).
 
     // Parameters
