@@ -164,7 +164,7 @@ public class GA2Main {
             System.out.println(mBuf.toString());
             maxGenTime = Math.max(maxGenTime, curGenTime);
 
-        } while (TIMEOUT + START_TIME - 1000 > System.currentTimeMillis() + (2 * maxGenTime));
+        } while (TIMEOUT + START_TIME - 500 > System.currentTimeMillis() + (2 * maxGenTime));
 
         // report
         mBuf.setLength(0);
