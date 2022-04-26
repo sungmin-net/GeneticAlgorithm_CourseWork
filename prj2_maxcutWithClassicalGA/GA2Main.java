@@ -13,14 +13,15 @@ public class GA2Main {
     private static final long START_TIME = System.currentTimeMillis();
     private static final String INPUT_FILE = "maxcut.in";
     private static final String OUTPUT_FILE = "maxcut.out";
-    private static final int TIMEOUT = 60000; // should be 180000 (180 sec).
+    private static final int TIMEOUT = 180000; // should be 180000 (180 sec)
+    private static final int FINISH_BUFFER_TIME = 800; // finish 800 ms in advance.
 
     // Parameters
     private static final int POPULATION_PARAMETER = 100000; // this / mChromosomeLength = pop. size
     private static final double SELECTION_EXCEPTION = 0.05; // anyone can be a parent with 10%
     private static final double SELECTION_PRESSURE = 0.05; // if not, upper 10% can be a parent
-    private static final int NUM_CUTTING_POINT = 3;
-    private static final double MUTATION_PROBABILITY = 0.05; // each gene can be flipped with 5%
+    private static final int NUM_CUTTING_POINT = 2;
+    private static final double MUTATION_PROBABILITY = 0.01; // each gene can be flipped with 5%
 
     private static Random mRandom = new Random();
     private static StringBuffer mBuf = new StringBuffer();
@@ -164,7 +165,8 @@ public class GA2Main {
             System.out.println(mBuf.toString());
             maxGenTime = Math.max(maxGenTime, curGenTime);
 
-        } while (TIMEOUT + START_TIME - 500 > System.currentTimeMillis() + (2 * maxGenTime));
+        } while (START_TIME + TIMEOUT - FINISH_BUFFER_TIME
+                > System.currentTimeMillis() + (2 * maxGenTime));
 
         // report
         mBuf.setLength(0);
