@@ -51,7 +51,7 @@ public class GA2Main {
             mGraph[ Integer.parseInt(line[ 0 ]) ][ Integer.parseInt(line[ 1 ]) ]
                     = Integer.parseInt(line[ 2 ]);
             mGraph[ Integer.parseInt(line[ 1 ]) ][ Integer.parseInt(line[ 0 ]) ]
-                    = Integer.parseInt(line[ 2 ]); // need?
+                    = Integer.parseInt(line[ 2 ]);
         }
 
         // 1. random population
