@@ -16,10 +16,10 @@ public class GA2Main {
     private static final int TIMEOUT = 60000; // should be 180000 (180 sec).
 
     // Parameters
-    private static final int POPULATION_PARAMETER = 50; // this x mChromosomeLength = pop. size
+    private static final int POPULATION_PARAMETER = 5000000; // this / mChromosomeLength = pop. size
     private static final double SELECTION_EXCEPTION = 0.10; // anyone can be a parent with 10%
     private static final double SELECTION_PRESSURE = 0.10; // if not, upper 10% can be a parent
-    private static final int NUM_CUTTING_POINT = 3;
+    private static final int NUM_CUTTING_POINT = 4;
     private static final double MUTATION_PROBABILITY = 0.05; // each gene can be flipped with 5%
 
     private static Random mRandom = new Random();
@@ -56,7 +56,7 @@ public class GA2Main {
 
         // 1. random population
         long populationStartTime = System.currentTimeMillis();
-        int numPopulation = mNumVertex * POPULATION_PARAMETER;
+        int numPopulation = POPULATION_PARAMETER / mNumVertex;
         mBuf.setLength(0);
         mBuf.append("# Random population started: ").append(populationStartTime)
                 .append(", size: ").append(numPopulation);
@@ -119,6 +119,7 @@ public class GA2Main {
                 }
 
                 if (mRandom.nextDouble() > SELECTION_EXCEPTION) {
+                    p2Index = mRandom.nextInt((int) (numPopulation * SELECTION_PRESSURE));
                     while (p2Index == p1Index) {
                         p2Index = mRandom.nextInt((int) (numPopulation * SELECTION_PRESSURE));
                     }
@@ -129,7 +130,7 @@ public class GA2Main {
                         population.get(p2Index).mChromosome);
 
                 // 2-3. mutation
-                for (int i = 0 ; i < childChromosome.length ; i++) {
+                for (int i = 1 ; i <= mNumVertex ; i++) {
                     if (mRandom.nextDouble() < MUTATION_PROBABILITY) {
                         childChromosome[ i ] = !childChromosome[ i ];
                     }
