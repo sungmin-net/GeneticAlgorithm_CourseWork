@@ -213,11 +213,6 @@ public class GA2Main {
         for (int i = 1 ; i <= mNumVertex ; i++) {
             if (chromosome[ i ]) {
                 for (int j = 1 ; j <= mNumVertex ; j++) {
-                    /*
-                    if (i == j && chromosome[ i ][ j ] == 0) {
-                        continue;
-                    }
-                    */
                     if (!chromosome[ j ]) {
                         sum += mGraph[ i ][ j ];
                     }
