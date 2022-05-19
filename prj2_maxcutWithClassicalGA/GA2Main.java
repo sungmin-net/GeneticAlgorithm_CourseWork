@@ -145,7 +145,7 @@ public class GA2Main {
                 }
 
                 genTotalQuality += childSolution.mQuality;
-                children.add(bestSolution);
+                children.add(childSolution);
             }
 
             // 2-3. replacement
